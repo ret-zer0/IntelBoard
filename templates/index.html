@@ -1,0 +1,102 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelBoard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>IntelBoard</h1>
+        <p>Your World Summarized at a Glance!</p>
+    </header>
+
+    <main>
+        <!-- Weather -->
+        <section class="weather">
+            <h2>Weather</h2>
+
+            <form method="POST">
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Enter a city"
+                    value="{{ city }}"
+                    required
+                >
+                <button type="submit">Check Weather</button>
+            </form>
+
+            {% if weather %}
+                <h3>{{ weather.city }}, {{ weather.country }}</h3>
+                <p>{{ weather.temperature_2m }}°C</p>
+                <p>{{ weather.condition }}</p>
+            {% elif weather_error %}
+                <p class="error">{{ weather_error }}</p>
+            {% endif %}
+        </section>
+
+        <!-- News -->
+        <section class="news">
+            <h2>Latest News</h2>
+
+            {% if news_error %}
+                <p class="error">News error: {{ news_error }}</p>
+            {% endif %}
+
+            {% for article in news %}
+                <article class="news-card">
+                    <h3>
+                        <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
+                            {{ article.title }}
+                        </a>
+                    </h3>
+                    <p class="source">{{ article.source }}</p>
+                    {% if article.summary %}
+                        <p>{{ article.summary }}</p>
+                    {% endif %}
+                    {% if article.published %}
+                        <p class="published">{{ article.published }}</p>
+                    {% endif %}
+                </article>
+            {% else %}
+                {% if not news_error %}
+                    <p>No news articles available.</p>
+                {% endif %}
+            {% endfor %}
+        </section>
+
+        <!-- GitHub -->
+        <section class="github">
+            <h2>Trending GitHub Repositories</h2>
+
+            {% if github_error %}
+                <p class="error">GitHub error: {{ github_error }}</p>
+            {% endif %}
+
+            {% for repo in repos %}
+                <article class="repo-card">
+                    <h3>
+                        <a href="{{ repo.url }}" target="_blank" rel="noopener noreferrer">
+                            {{ repo.name }}
+                        </a>
+                    </h3>
+                    <p>{{ repo.description }}</p>
+                    <p class="repo-info">
+                        Language: {{ repo.language }} |
+                        Stars: {{ repo.stars }}
+                    </p>
+                </article>
+            {% else %}
+                {% if not github_error %}
+                    <p>No repositories available.</p>
+                {% endif %}
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>
+```
+

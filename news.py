@@ -14,18 +14,18 @@ FEEDS = {
 def get_date(date):
 
     if not date:
-        return datetime.min.replace(tzinfo=timezone.utc)
+        return datetime.min.replace(tzinfo=timezone.utc)  # noqa: UP017
 
     try:
         converted_date = parsedate_to_datetime(date)
 
         if converted_date.tzinfo is None:
-            converted_date = converted_date.replace(tzinfo=timezone.utc)
+            converted_date = converted_date.replace(tzinfo=timezone.utc)  # noqa: UP017
 
         return converted_date
 
     except (ValueError, TypeError, OverflowError):
-        return datetime.min.replace(tzinfo=timezone.utc)
+        return datetime.min.replace(tzinfo=timezone.utc)  # noqa: UP017
 
 def fetch_news(limit=15):
     articles = []
@@ -53,7 +53,7 @@ def fetch_news(limit=15):
 
 
         except Exception as error:  # noqa: BLE001
-            print(f"Erro fetchin {source}, {error}")
+            print(f"Error fetching {source}, {error}")
 
     articles.sort(
         key=lambda article: get_date(article["published"]),
