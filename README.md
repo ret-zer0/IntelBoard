@@ -78,6 +78,7 @@ Instead of switching between multiple websites to stay informed, IntelBoard prov
 
 ## Project Structure
 
+```text
 IntelBoard/
 ├── static/
 │   ├── style.css
@@ -86,12 +87,12 @@ IntelBoard/
 │   └── index.html
 ├── .gitignore
 ├── app.py
-│── news.py
-│── git.py
+├── news.py
+├── git.py
 ├── requirements.txt
-│── weather.py
+├── weather.py
 └── README.md
-
+```
 
 ## Project Purpose
 
