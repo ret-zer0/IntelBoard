@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,39 +7,21 @@
     <title>IntelBoard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body data-weather-submitted="{{ 'true' if request.method == 'POST' else 'false' }}">
     <header>
         <h1>IntelBoard</h1>
         <p>Your World Summarized at a Glance!</p>
     </header>
 
+    <nav class="navbar">
+        <button class="nav-link" data-section="weather">Weather</button>
+        <button class="nav-link active" data-section="news">News</button>
+        <button class="nav-link" data-section="github">GitHub</button>
+    </nav>
+
     <main>
-        <!-- Weather -->
-        <section class="weather">
-            <h2>Weather</h2>
-
-            <form method="POST">
-                <input
-                    type="text"
-                    name="city"
-                    placeholder="Enter a city"
-                    value="{{ city }}"
-                    required
-                >
-                <button type="submit">Check Weather</button>
-            </form>
-
-            {% if weather %}
-                <h3>{{ weather.city }}, {{ weather.country }}</h3>
-                <p>{{ weather.temperature_2m }}°C</p>
-                <p>{{ weather.condition }}</p>
-            {% elif weather_error %}
-                <p class="error">{{ weather_error }}</p>
-            {% endif %}
-        </section>
-
         <!-- News -->
-        <section class="news">
+        <section id="news" class="content-section">
             <h2>Latest News</h2>
 
             {% if news_error %}
@@ -54,9 +36,11 @@
                         </a>
                     </h3>
                     <p class="source">{{ article.source }}</p>
+
                     {% if article.summary %}
                         <p>{{ article.summary }}</p>
                     {% endif %}
+
                     {% if article.published %}
                         <p class="published">{{ article.published }}</p>
                     {% endif %}
@@ -67,9 +51,93 @@
                 {% endif %}
             {% endfor %}
         </section>
+        
+        <!-- Weather -->
+        <section id="weather" class="content-section hidden">
+            <h2>Weather</h2>
+        
+            <form method="POST" class="weather-form">
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Enter a city"
+                    value="{{ city }}"
+                    required
+                >
+                <button type="submit">Check Weather</button>
+            </form>
+        
+            {% if weather %}
+                <div class="weather-overview">
+                    <h3 class="weather-location">
+                        {{ weather.city }}, {{ weather.country }}
+                    </h3>
+        
+                    <p class="weather-temperature">
+                        {{ weather.temperature_2m }}°C
+                    </p>
+        
+                    <p class="weather-condition">
+                        {{ weather.condition }}
+                    </p>
+                </div>
+        
+                <h3 class="weather-details-title">Current Conditions</h3>
+        
+                <div class="weather-details">
+                    <div class="weather-card">
+                        <span class="label">Feels like</span>
+                        <p class="value">{{ weather.apparent_temperature }}°C</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Humidity</span>
+                        <p class="value">{{ weather.relative_humidity_2m }}%</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Wind speed</span>
+                        <p class="value">{{ weather.wind_speed_10m }} km/h</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Wind direction</span>
+                        <p class="value">{{ weather.wind_direction_10m }}°</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Wind gusts</span>
+                        <p class="value">{{ weather.wind_gusts_10m }} km/h</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Cloud cover</span>
+                        <p class="value">{{ weather.cloud_cover }}%</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Pressure</span>
+                        <p class="value">{{ weather.pressure_msl }} hPa</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Precipitation</span>
+                        <p class="value">{{ weather.precipitation }} mm</p>
+                    </div>
+        
+                    <div class="weather-card">
+                        <span class="label">Rain</span>
+                        <p class="value">{{ weather.rain }} mm</p>
+                    </div>
+                </div>
+        
+            {% elif weather_error %}
+                <p class="error">{{ weather_error }}</p>
+            {% endif %}
+        </section>
 
         <!-- GitHub -->
-        <section class="github">
+        <section id="github" class="content-section hidden">
             <h2>Trending GitHub Repositories</h2>
 
             {% if github_error %}
@@ -96,7 +164,7 @@
             {% endfor %}
         </section>
     </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-```
-

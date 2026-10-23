@@ -7,6 +7,7 @@ import feedparser
 
 FEEDS = {
     "Al Jazeera": "https://www.aljazeera.com/xml/rss/all.xml",
+    "The Guardian": "https://www.theguardian.com/world/rss",
     "BBC": "https://feeds.bbci.co.uk/news/rss.xml",
     "Dawn": "https://www.dawn.com/feeds/pakistan/"
 }
